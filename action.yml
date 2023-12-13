@@ -18,7 +18,14 @@ runs:
   using: composite
   steps:
     - run: bash --noprofile --norc "${GITHUB_ACTION_PATH:?}/main.sh"
+      if: ${{ runner.os != "Windows" }}
       shell: bash
+      env:
+        INPUT_TOOL: ${{ inputs.tool }}
+        INPUT_CHECKSUM: ${{ inputs.checksum }}
+    - run: bash --noprofile --norc "${GITHUB_ACTION_PATH:?}/main.sh"
+      if: ${{ runner.os == "Windows" }}
+      shell: powershell
       env:
         INPUT_TOOL: ${{ inputs.tool }}
         INPUT_CHECKSUM: ${{ inputs.checksum }}
